@@ -63,3 +63,19 @@ stopButton.addEventListener('click', stopVideoCapture);
 
 // Disable stop button initially
 stopButton.disabled = true;
+window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        const sectionTop = section.getBoundingClientRect().top;
+        const triggerPoint = window.innerHeight - 100;
+
+        if (sectionTop < triggerPoint) {
+            section.classList.add('visible');
+        }
+    });
+});
+// Function to scroll to the video section
+function scrollToVideo() {
+    const videoSection = document.getElementById('videoSection');
+    videoSection.scrollIntoView({ behavior: 'smooth' });
+}
