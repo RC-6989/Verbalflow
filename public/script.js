@@ -63,3 +63,7 @@ stopButton.addEventListener('click', stopVideoCapture);
 
 // Disable stop button initially
 stopButton.disabled = true;
+
+function scrollToVideo() {
+    document.getElementById('videoSection').scrollIntoView({ behavior: 'smooth' });
+}
