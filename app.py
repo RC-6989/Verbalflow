@@ -18,6 +18,7 @@ def talking(audioPath):
 
 @app.route("/")
 def home():
+    print(emotion)
     return render_template('index.html', var1=emotion)
 
 # Basically app.use() in express
@@ -31,10 +32,13 @@ def upload_frame():
     if 'frame' not in request.files:
         return "No frame part in the request", 400
     file = request.files['frame']
-    if file:
+    try:
         emotion = detect_emotion(file)
-        return "Frame received and saved", 200
-    return "Failed to upload frame", 400
+    except:
+        pass
+    print(emotion)
+    return "Frame received and saved", 200
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
