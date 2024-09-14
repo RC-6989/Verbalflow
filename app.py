@@ -7,6 +7,8 @@ from api_handler import get_feedback
 import cv2 as cv
 from MachineLearningPredictions.Emotion_Detection import detect_emotion
 from MachineLearningPredictions.Speech_Detection import detect_wav
+from os import path 
+from pydub import AudioSegment 
 
 # Starts the app
 app = Flask(__name__)
@@ -51,8 +53,11 @@ def upload_audio():
     if 'audio_file' not in request.files:
         return "No audio in the request", 400
     
-    os.remove("recordedFiles/audio.wav")
-    with open('recordedFiles/audio.wav','w') as fp: pass
+    try:
+        os.remove("recordedFiles/audio.mp3")
+    except:
+        pass
+    with open('recordedFiles/audio.mp3','w') as fp: pass
     audio = request.files['audio_file']
 
 
@@ -64,7 +69,7 @@ def upload_audio():
 
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_name)
     audio.save(file_path)
-    # ADD STUFF HERE
+    # CONVERT TO WAV BECAUSE MP3 FILES DON'T WORK
     transcript = detect_wav("recordedFiles/audio.wav")
     feedback = get_feedback(emotions_list, transcript)
     print("____________________ \n" + feedback)
