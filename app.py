@@ -5,18 +5,19 @@ from MachineLearningPredictions.Emotion_Detection import detect_emotion
 from MachineLearningPredictions.Speech_Detection import detect_wav
 from api_handler import get_feedback
 import cv2 as cv
+from MachineLearningPredictions.Emotion_Detection import detect_emotion
+# from MachineLearningPredictions.Speech_Detection import detect_wav
 
-
+emotion = "NOTHING"
+# Starts the app
+app = Flask(__name__)
 
 emotions_list = []
 
 
-# Starts the app
-app = Flask(__name__)
-
 @app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template('index.html', emo=emotion)
 
 # Basically app.use() in express
 @app.route('/public/<path:path>')
@@ -24,16 +25,7 @@ def send_report(path):
     return send_from_directory('public', path)
 
 
-# Route to handle image upload
-@app.route('/upload', methods=['POST'])
-def upload_image():
-    # Secure the filename and save the file to the desired folder
-    filename = secure_filename(file.filename)
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    file.save(file_path)
-    return f"File uploaded successfully: {filename}"
-
-UPLOAD_FOLDER = 'frames/'
+UPLOAD_FOLDER = 'recordedFiles/'
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), UPLOAD_FOLDER)
 
 # Get video
@@ -42,15 +34,39 @@ def upload_frame():
     if 'frame' not in request.files:
         return "No frame part in the request", 400
     file = request.files['frame']
-    if file:
-        filename = secure_filename(file.filename)
-        print("The file name is " + filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-        emotion = detect_emotion("/Users/rohitchavali/Desktop/Verbalflow/Verbalflow/frames/frame.png")
-        emotions_list.append(emotion)
-        return "Frame received and saved", 200
-    return "Failed to upload frame", 400
+
+    if not file:
+        return "Failed to upload frame", 400
+
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(file_path)
+    global emotion
+    emotion = detect_emotion(file_path)
+
+    return "Finished", 200
+
+# Get audio
+@app.route('/upload_audio', methods=['POST'])
+def upload_audio():
+    if 'audio_file' not in request.files:
+        return "No audio in the request", 400
+    audio = request.files['audio_file']
+
+    print("Audio before:",type(audio))
+
+    if not audio:
+        return "Failed to upload audio", 400
+
+    audio_name = secure_filename(audio.filename)
+
+    print("Audio:",type(audio_name))
+
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_name)
+    audio.save(file_path)
+    # ADD STUFF HERE
+
+    return "Finished", 200
 
 
 if __name__ == '__main__':
