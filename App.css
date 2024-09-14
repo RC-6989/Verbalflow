@@ -1,0 +1,195 @@
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  background-color: #f0f4f8; /* Soft, modern background */
+  color: #333;
+}
+
+/* App Container */
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1s ease-out forwards; /* Smooth entrance */
+}
+
+/* App entrance animation */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.App-header {
+  background-color: #282c34;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+  color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.App-header:hover {
+  transform: scale(1.03); /* Hover effect to slightly enlarge */
+}
+
+/* Logo Animation */
+.App-logo {
+  height: 18vmin;
+  pointer-events: none;
+  animation: App-logo-spin infinite 6s linear; /* Smooth, slower spin */
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Button Styles */
+button {
+  padding: 0.8rem 1.5rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Button shadow for depth */
+}
+
+button:hover {
+  background-color: #388e3c;
+  transform: translateY(-3px); /* Button hover effect */
+}
+
+button:active {
+  transform: translateY(1px); /* Pressed effect */
+}
+
+button.turn-on-camera {
+  background-color: #ff6f61;
+  transition: background-color 0.5s ease;
+}
+
+button.turn-on-camera:hover {
+  background-color: #e65b4e;
+}
+
+/* Webcam Capture Container */
+.WebcamCapture {
+  background-color: #fff;
+  border: 2px solid #e0e0e0;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s 0.3s ease-out forwards; /* Delayed appearance */
+}
+
+/* Webcam video styles */
+.Webcam video {
+  border-radius: 10px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Video shadow */
+}
+
+/* Link Styles */
+.App-link {
+  color: #61dafb;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.App-link:hover {
+  color: #21a1f1;
+}
+
+/* Loader Animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loader {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+
+.loader:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #61dafb;
+  border-color: #61dafb transparent #61dafb transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .App-header {
+    font-size: 1rem;
+    min-height: 40vh;
+  }
+
+  button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .WebcamCapture {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+}
