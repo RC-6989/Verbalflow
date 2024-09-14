@@ -4,8 +4,6 @@ from werkzeug.utils import secure_filename
 import whisper
 from MachineLearningPredictions.Emotion_Detection import detect_emotion
 
-emotion = None
-print("Renew?")
 
 # Starts the app
 app = Flask(__name__)
@@ -18,7 +16,6 @@ def talking(audioPath):
 
 @app.route("/")
 def home():
-    print(emotion)
     return render_template('index.html', var1=emotion)
 
 # Basically app.use() in express
@@ -32,13 +29,10 @@ def upload_frame():
     if 'frame' not in request.files:
         return "No frame part in the request", 400
     file = request.files['frame']
-    try:
+    if file:
         emotion = detect_emotion(file)
-    except:
-        pass
-    print(emotion)
-    return "Frame received and saved", 200
-    
+        return "Frame received and saved", 200
+    return "Failed to upload frame", 400
 
 if __name__ == '__main__':
     app.run(debug=True)
