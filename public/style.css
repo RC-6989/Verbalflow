@@ -1,72 +1,99 @@
-/* Body Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f4f4f9;
+    min-height: 100vh;
+    background: #121212;
+    color: #ffffff;
 }
 
-/* Heading Styling */
 h1 {
-    color: #333;
+    font-size: 3rem;
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 2.5rem;
-    font-weight: bold;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #ffffff;
+    animation: fadeIn 1s ease forwards, neon 2s ease-in-out infinite alternate;
 }
 
-/* Video Element Styling */
+@keyframes neon {
+    0% {
+        text-shadow: 0 0 5px #00eaff, 0 0 10px #00eaff, 0 0 20px #00eaff;
+    }
+    100% {
+        text-shadow: 0 0 15px #00eaff, 0 0 25px #00eaff, 0 0 40px #00eaff;
+    }
+}
+
 video {
-    width: 640px;
-    height: 480px;
-    border: 5px solid #4a90e2;
+    width: 100%;
+    max-width: 720px;
     border-radius: 10px;
-    background-color: black;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
 }
 
-/* Button Styling */
+video:hover {
+    transform: scale(1.03);
+}
+
 button {
     padding: 10px 20px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #fff;
-    background-color: #4a90e2;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: #00eaff;
+    color: #121212;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 10px;
+    margin: 15px;
 }
 
 button:hover {
-    background-color: #357ABD;
-    transform: scale(1.05);
+    background-color: #00b5d8;
+    transform: translateY(-5px);
 }
 
 button:active {
-    transform: scale(0.98);
+    background-color: #0097b3;
+    transform: translateY(0);
 }
 
-/* Canvas Styling (Hidden) */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 canvas {
     display: none;
 }
 
-/* Responsive Design */
+html {
+    scroll-behavior: smooth;
+}
+
 @media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
     video {
         width: 90%;
-        height: auto;
     }
 
     button {
-        width: 80%;
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 }
