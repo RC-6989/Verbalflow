@@ -13,6 +13,9 @@ body {
     animation: gradientBackground 10s ease infinite;
     color: #FFFFFF;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Gradient background animation */
@@ -29,7 +32,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 100px 20px;
+    padding: 60px 20px;
+    gap: 60px;
 }
 
 /* Section Styling */
@@ -38,7 +42,7 @@ section {
     max-width: 1200px;
     text-align: center;
     padding: 80px 20px;
-    margin: 60px 0;
+    margin: 0;
     color: #FFFFFF;
 }
 
@@ -50,7 +54,8 @@ section {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(135deg, #000000, #004d00);
+    background: transparent;
+    padding-top: 20vh;
 }
 
 /* Headings */
@@ -72,6 +77,11 @@ p {
     color: #e1e1e1;
     max-width: 900px;
     line-height: 1.7;
+    transition: opacity 1s ease-in-out;
+}
+
+p:hover {
+    opacity: 0.8;
 }
 
 /* Call-to-Action Button */
@@ -84,10 +94,32 @@ p {
     background: linear-gradient(45deg, #00FF00, #009900);
     border: none;
     border-radius: 50px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     cursor: pointer;
     margin-top: 40px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+#hero button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 255, 0, 0.4), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: scale(0);
+    z-index: 0;
+}
+
+#hero button:hover::before {
+    opacity: 1;
+    transform: scale(1);
 }
 
 #hero button:hover {
@@ -102,8 +134,15 @@ p {
 
 /* Video Section */
 #videoSection {
-    background: #1a1a1a;
+    background: #111111;
     padding: 100px 20px;
+    border-radius: 20px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+    transition: background 0.5s ease;
+}
+
+#videoSection:hover {
+    background: #1c1c1c;
 }
 
 h2 {
@@ -128,11 +167,6 @@ video:hover {
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
 }
 
-/* Smooth scroll */
-html {
-    scroll-behavior: smooth;
-}
-
 /* Neon Glow Animation */
 @keyframes neonGlow {
     from {
@@ -141,6 +175,35 @@ html {
     to {
         text-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 1);
     }
+}
+
+/* Button Styling for Video Section */
+#startButton, #stopButton {
+    padding: 10px 25px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    background: #00CC00;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 255, 0, 0.4);
+    margin: 10px;
+    transition: background 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+#startButton:hover, #stopButton:hover {
+    background: #00FF00;
+    transform: translateY(-3px);
+}
+
+#startButton:active, #stopButton:active {
+    transform: translateY(0);
+}
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
 }
 
 /* Media queries for responsiveness */
