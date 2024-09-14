@@ -31,6 +31,7 @@ async function startRecording() {
             const blob = new Blob(recordedChunks, { type: 'audio/wav' });
             const formData = new FormData();
             formData.append('audio_file', blob, 'audio.wav');
+            console.log(formData)
 
             // Send the audio blob to the Flask backend using fetch
             try {

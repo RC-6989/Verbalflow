@@ -6,9 +6,8 @@ from MachineLearningPredictions.Speech_Detection import detect_wav
 from api_handler import get_feedback
 import cv2 as cv
 from MachineLearningPredictions.Emotion_Detection import detect_emotion
-# from MachineLearningPredictions.Speech_Detection import detect_wav
+from MachineLearningPredictions.Speech_Detection import detect_wav
 
-emotion = "NOTHING"
 # Starts the app
 app = Flask(__name__)
 
@@ -17,7 +16,7 @@ emotions_list = []
 
 @app.route("/")
 def home():
-    return render_template('index.html', emo=emotion)
+    return render_template('index.html')
 
 # Basically app.use() in express
 @app.route('/public/<path:path>')
@@ -43,7 +42,7 @@ def upload_frame():
     file.save(file_path)
     global emotion
     emotion = detect_emotion(file_path)
-
+    emotions_list.append(emotion)
     return "Finished", 200
 
 # Get audio
@@ -51,21 +50,24 @@ def upload_frame():
 def upload_audio():
     if 'audio_file' not in request.files:
         return "No audio in the request", 400
+    
+    os.remove("recordedFiles/audio.wav")
+    with open('recordedFiles/audio.wav','w') as fp: pass
     audio = request.files['audio_file']
 
-    print("Audio before:",type(audio))
 
     if not audio:
         return "Failed to upload audio", 400
 
     audio_name = secure_filename(audio.filename)
 
-    print("Audio:",type(audio_name))
 
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_name)
     audio.save(file_path)
     # ADD STUFF HERE
-
+    transcript = detect_wav("recordedFiles/audio.wav")
+    feedback = get_feedback(emotions_list, transcript)
+    print("____________________ \n" + feedback)
     return "Finished", 200
 
 
