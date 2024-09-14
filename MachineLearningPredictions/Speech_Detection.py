@@ -5,7 +5,7 @@ r = sr.Recognizer()
 
 
 
-def recognize_wav(wav_file):    
+def detect_wav(wav_file):    
     try:
         with sr.AudioFile(wav_file) as source2:
             print("Listening")
