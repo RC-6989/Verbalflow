@@ -1,8 +1,0 @@
-tensorflow
-tf-keras
-keras
-pandas
-numpy
-jupyter
-tqdm
-opencv-contrib-python
