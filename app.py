@@ -1,8 +1,10 @@
 import os
 from flask import Flask, request, redirect, url_for, flash, render_template, send_from_directory
 from werkzeug.utils import secure_filename
-
-
+from MachineLearningPredictions.Emotion_Detection import detect_emotion
+from MachineLearningPredictions.Speech_Detection import detect_wav
+from api_handler import get_feedback
+import cv2 as cv
 from MachineLearningPredictions.Emotion_Detection import detect_emotion
 # from MachineLearningPredictions.Speech_Detection import detect_wav
 
@@ -10,6 +12,7 @@ emotion = "NOTHING"
 # Starts the app
 app = Flask(__name__)
 
+emotions_list = []
 
 
 @app.route("/")
@@ -31,6 +34,7 @@ def upload_frame():
     if 'frame' not in request.files:
         return "No frame part in the request", 400
     file = request.files['frame']
+
     if not file:
         return "Failed to upload frame", 400
 
@@ -64,9 +68,9 @@ def upload_audio():
 
     return "Finished", 200
 
+
 if __name__ == '__main__':
     app.run(debug=True)
-
 
 
 

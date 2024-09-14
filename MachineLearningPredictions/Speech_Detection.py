@@ -1,9 +1,6 @@
 import speech_recognition as sr
 
-
 r = sr.Recognizer() 
-
-
 
 def detect_wav(wav_file):    
     try:
@@ -13,10 +10,10 @@ def detect_wav(wav_file):
             MyText = r.recognize_google(audio2)
             MyText = MyText.lower()
 
-            print(MyText)
-            
+            return MyText
     except sr.RequestError as e:
         print("Unable to recognize audio. ")
         
     except sr.UnknownValueError:
         print("Unknown file value. File not found/File Corrupted. ")
+
