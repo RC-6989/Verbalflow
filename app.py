@@ -77,8 +77,8 @@ def upload_audio():
     audio.save(file_path)
     extract_audio(input_path="/recordedFiles/video.mp4", output_path="recordedFiles/audio.mp3")
     
-    subprocess.call(['ffmpeg', '-i', 'audio.mp3',
-                   'audio.wav'])
+    subprocess.call(['ffmpeg', '-i', 'recordedFiles/audio.mp3',
+                   'recordedFiles/audio.wav'])
     transcript = detect_wav("recordedFiles/audio.wav")
     feedback = get_feedback(emotions_list, transcript)
     print("____________________ \n" + feedback)
