@@ -8,7 +8,11 @@ import cv2 as cv
 from MachineLearningPredictions.Emotion_Detection import detect_emotion
 from MachineLearningPredictions.Speech_Detection import detect_wav
 from os import path 
-from pydub import AudioSegment 
+from audio_extract import extract_audio
+import subprocess
+
+# import moviepy.editor as moviepy
+
 
 # Starts the app
 app = Flask(__name__)
@@ -44,6 +48,7 @@ def upload_frame():
     file.save(file_path)
     global emotion
     emotion = detect_emotion(file_path)
+    print(emotion)
     emotions_list.append(emotion)
     return "Finished", 200
 
@@ -54,10 +59,11 @@ def upload_audio():
         return "No audio in the request", 400
     
     try:
-        os.remove("recordedFiles/audio.mp3")
+        os.remove("recordedFiles/audio.webm")
     except:
         pass
-    with open('recordedFiles/audio.mp3','w') as fp: pass
+    
+    with open('recordedFiles/audio.webm','w') as fp: pass
     audio = request.files['audio_file']
 
 
@@ -69,7 +75,10 @@ def upload_audio():
 
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_name)
     audio.save(file_path)
-    # CONVERT TO WAV BECAUSE MP3 FILES DON'T WORK
+    extract_audio(input_path="/recordedFiles/video.mp4", output_path="recordedFiles/audio.mp3")
+    
+    subprocess.call(['ffmpeg', '-i', 'audio.mp3',
+                   'audio.wav'])
     transcript = detect_wav("recordedFiles/audio.wav")
     feedback = get_feedback(emotions_list, transcript)
     print("____________________ \n" + feedback)

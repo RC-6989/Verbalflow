@@ -17,7 +17,9 @@ async function startRecording() {
         stopButton.disabled = false;
         captureInterval = setInterval(sendFrameToBackend, 500);
 
-        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+        console.log("123", mediaRecorder.mimeType)
+        //mediaRecorder.mimeType = 'audio/webm';
 
         // Collect the audio data
         mediaRecorder.ondataavailable = function (event) {
@@ -28,9 +30,10 @@ async function startRecording() {
 
         // Stop recording
         mediaRecorder.onstop = async function () {
-            const blob = new Blob(recordedChunks, { type: 'audio/mp3' });
+            console.log("hello",recordedChunks[0].type)
+            const blob = new Blob(recordedChunks, { type: recordedChunks[0].type});
             const formData = new FormData();
-            formData.append('audio_file', blob, 'audio.mp3');
+            formData.append('audio_file', blob, 'audio.webm');
             console.log(formData)
 
             // Send the audio blob to the Flask backend using fetch
