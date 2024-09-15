@@ -9,7 +9,7 @@ from MachineLearningPredictions.Emotion_Detection import detect_emotion
 from MachineLearningPredictions.Speech_Detection import detect_wav
 from os import path 
 from audio_extract import extract_audio
-import subprocess
+import ffmpeg
 
 # import moviepy.editor as moviepy
 
@@ -52,16 +52,23 @@ def upload_frame():
     emotions_list.append(emotion)
     return "Finished", 200
 
+import subprocess
+
+def convert_video_to_audio(video_file_path, audio_file_path):
+    command = "ffmpeg -y -i {} -vn -b:a 50k {}".format(video_file_path, audio_file_path)
+    subprocess.call(command, shell=True)
+
 # Get audio
 @app.route('/upload_audio', methods=['POST'])
 def upload_audio():
     if 'audio_file' not in request.files:
         return "No audio in the request", 400
     
-    try:
-        os.remove("recordedFiles/audio.webm")
-    except:
-        pass
+    try: os.remove("recordedFiles/audio.webm")
+    except: pass
+
+    try: os.remove("recordedFiles/audio.wav")
+    except: pass
     
     with open('recordedFiles/audio.webm','w') as fp: pass
     audio = request.files['audio_file']
@@ -75,13 +82,28 @@ def upload_audio():
 
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_name)
     audio.save(file_path)
-    extract_audio(input_path="/recordedFiles/video.mp4", output_path="recordedFiles/audio.mp3")
+
     
-    subprocess.call(['ffmpeg', '-i', 'recordedFiles/audio.mp3',
-                   'recordedFiles/audio.wav'])
-    transcript = detect_wav("recordedFiles/audio.wav")
+
+    video_file = file_path
+    audio_file = "/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav"
+    convert_video_to_audio(video_file, audio_file)
+
+    # (ffmpeg.input(file_path).format(file_path,os.path.join(app.config['UPLOAD_FOLDER'], "audio.wav")).global_args('-progress', 'unix://{}'.format(self.filename)))
+    # print(inputv)
+    # raudio = inputv.audio
+    # rvideo = inputv.video
+    # ffmpeg.output(raudio, rvideo, os.path.join(app.config['UPLOAD_FOLDER'], "audio.wav"))
+
+    # extract_audio(input_path=os.path.join(app.config['UPLOAD_FOLDER'], "audio.webm"), output_path=os.path.join(app.config['UPLOAD_FOLDER'], "audio.wav"))
+    
+    # subprocess.call(['ffmpeg', '-i', '/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.mp3',
+    #                '/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav'])
+    transcript = detect_wav("/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav")
+    print("Transcript is " + transcript)
     feedback = get_feedback(emotions_list, transcript)
     print("____________________ \n" + feedback)
+    print("done ")
     return "Finished", 200
 
 
