@@ -120,3 +120,17 @@ function scrollToVideo() {
     const videoSection = document.getElementById('videoSection');
     videoSection.scrollIntoView({ behavior: 'smooth' });
 }
+const sections = document.querySelectorAll('section');
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+});
+
+sections.forEach(section => {
+    observer.observe(section);
+});
+
