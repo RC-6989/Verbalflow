@@ -5,22 +5,61 @@ const stopButton = document.getElementById('stopButton');
 const canvasContext = canvasElement.getContext('2d');
 
 let stream;  // To store the media stream
+let mediaRecorder;
+let recordedChunks = [];
 
 // Function to start video capture
-async function startVideoCapture() {
+async function startRecording() {
     try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
         videoElement.srcObject = stream;
         startButton.disabled = true;
         stopButton.disabled = false;
-        captureInterval = setInterval(sendFrameToBackend, 1000);
+        captureInterval = setInterval(sendFrameToBackend, 500);
+
+        mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+        console.log("123", mediaRecorder.mimeType)
+        //mediaRecorder.mimeType = 'audio/webm';
+
+        // Collect the audio data
+        mediaRecorder.ondataavailable = function (event) {
+            if (event.data.size > 0) {
+                recordedChunks.push(event.data);
+            }
+        };
+
+        // Stop recording
+        mediaRecorder.onstop = async function () {
+            console.log("hello",recordedChunks[0].type)
+            const blob = new Blob(recordedChunks, { type: recordedChunks[0].type});
+            const formData = new FormData();
+            formData.append('audio_file', blob, 'audio.webm');
+            console.log(formData)
+
+            // Send the audio blob to the Flask backend using fetch
+            try {
+                const response = await fetch('/upload_audio', {
+                    method: 'POST',
+                    body: formData
+                });
+            } catch (err) {
+                console.error(err);
+            }
+
+            // Debug
+            // const result = await response.json();
+            // console.log('Server response:', result);
+        };
+
+        mediaRecorder.start();
+
     } catch (err) {
-        console.error("Error accessing the webcam:", err);
+        console.error("Error accessing the webcam/microphone:", err);
     }
 }
 
 // Function to stop video capture
-function stopVideoCapture() {
+function stopRecording() {
     if (stream) {
         // Stop all video tracks in the stream
         stream.getTracks().forEach(track => track.stop());
@@ -32,6 +71,8 @@ function stopVideoCapture() {
         startButton.disabled = false;
         stopButton.disabled = true;
         clearInterval(captureInterval);
+
+        mediaRecorder.stop();
     }
 }
 
@@ -58,8 +99,8 @@ function sendFrameToBackend() {
 }
 
 // Attach event listeners to the buttons
-startButton.addEventListener('click', startVideoCapture);
-stopButton.addEventListener('click', stopVideoCapture);
+startButton.addEventListener('click', startRecording);
+stopButton.addEventListener('click', stopRecording);
 
 // Disable stop button initially
 stopButton.disabled = true;
@@ -92,3 +133,4 @@ const observer = new IntersectionObserver(entries => {
 sections.forEach(section => {
     observer.observe(section);
 });
+

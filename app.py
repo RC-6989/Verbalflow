@@ -1,12 +1,23 @@
 import os
 from flask import Flask, request, redirect, url_for, flash, render_template, send_from_directory
 from werkzeug.utils import secure_filename
+from MachineLearningPredictions.Emotion_Detection import detect_emotion
+from MachineLearningPredictions.Speech_Detection import detect_wav
+from api_handler import get_feedback
+import cv2 as cv
+from MachineLearningPredictions.Emotion_Detection import detect_emotion
+from MachineLearningPredictions.Speech_Detection import detect_wav
+from os import path 
+from audio_extract import extract_audio
+import ffmpeg
 
-# from MachineLearningPredictions.Emotion_Detection import detect_emotion
-# from MachineLearningPredictions.Speech_Detection import detect_wav
+# import moviepy.editor as moviepy
+
+
 # Starts the app
 app = Flask(__name__)
 
+emotions_list = []
 
 
 @app.route("/")
@@ -18,17 +29,85 @@ def home():
 def send_report(path):
     return send_from_directory('public', path)
 
+
+UPLOAD_FOLDER = 'recordedFiles/'
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), UPLOAD_FOLDER)
+
 # Get video
 @app.route('/upload_frame', methods=['POST'])
 def upload_frame():
     if 'frame' not in request.files:
         return "No frame part in the request", 400
     file = request.files['frame']
-    if file:
-        # emotion = detect_emotion(file)
-        return "Frame received and saved", 200
-    return "Failed to upload frame", 400
+
+    if not file:
+        return "Failed to upload frame", 400
+
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(file_path)
+    global emotion
+    emotion = detect_emotion(file_path)
+    print(emotion)
+    emotions_list.append(emotion)
+    return "Finished", 200
+
+import subprocess
+
+def convert_video_to_audio(video_file_path, audio_file_path):
+    command = "ffmpeg -y -i {} -vn -b:a 50k {}".format(video_file_path, audio_file_path)
+    subprocess.call(command, shell=True)
+
+# Get audio
+@app.route('/upload_audio', methods=['POST'])
+def upload_audio():
+    if 'audio_file' not in request.files:
+        return "No audio in the request", 400
+    
+    try: os.remove("recordedFiles/audio.webm")
+    except: pass
+
+    try: os.remove("recordedFiles/audio.wav")
+    except: pass
+    
+    with open('recordedFiles/audio.webm','w') as fp: pass
+    audio = request.files['audio_file']
+
+
+    if not audio:
+        return "Failed to upload audio", 400
+
+    audio_name = secure_filename(audio.filename)
+
+
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_name)
+    audio.save(file_path)
+
+    
+
+    video_file = file_path
+    audio_file = "/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav"
+    convert_video_to_audio(video_file, audio_file)
+
+    # (ffmpeg.input(file_path).format(file_path,os.path.join(app.config['UPLOAD_FOLDER'], "audio.wav")).global_args('-progress', 'unix://{}'.format(self.filename)))
+    # print(inputv)
+    # raudio = inputv.audio
+    # rvideo = inputv.video
+    # ffmpeg.output(raudio, rvideo, os.path.join(app.config['UPLOAD_FOLDER'], "audio.wav"))
+
+    # extract_audio(input_path=os.path.join(app.config['UPLOAD_FOLDER'], "audio.webm"), output_path=os.path.join(app.config['UPLOAD_FOLDER'], "audio.wav"))
+    
+    # subprocess.call(['ffmpeg', '-i', '/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.mp3',
+    #                '/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav'])
+    transcript = detect_wav("/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav")
+    print("Transcript is " + transcript)
+    feedback = get_feedback(emotions_list, transcript)
+    print("____________________ \n" + feedback)
+    print("done ")
+    return "Finished", 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
