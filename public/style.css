@@ -1,379 +1,454 @@
-/* Global reset and body styling */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    /* Global reset and body styling */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #000000, #004d00);
-    background-size: 200% 200%;
-    animation: gradientBackground 10s ease infinite;
-    color: #FFFFFF;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    body {
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #000000, #004d00);
+        background-size: 200% 200%;
+        animation: gradientBackground 10s ease infinite;
+        color: #FFFFFF;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-/* Gradient background animation */
-@keyframes gradientBackground {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+    /* Gradient background animation */
+    @keyframes gradientBackground {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
 
-/* Page container for center alignment and scrollability */
-.container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 20px;
-    gap: 60px;
-    animation: containerFadeIn 1s ease-in-out;
-}
+    /* Page container for center alignment and scrollability */
+    .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        gap: 60px;
+        animation: containerFadeIn 1s ease-in-out;
+    }
 
-@keyframes containerFadeIn {
-    from {
+    @keyframes containerFadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Section Styling */
+    section {
+        width: 100%;
+        max-width: 1200px;
+        text-align: center;
+        padding: 80px 20px;
+        margin: 0;
+        color: #FFFFFF;
         opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Section Styling */
-section {
-    width: 100%;
-    max-width: 1200px;
-    text-align: center;
-    padding: 80px 20px;
-    margin: 0;
-    color: #FFFFFF;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-section.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Hero Section Styling */
-#hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: transparent;
-    padding-top: 20vh;
-    animation: fadeIn 1.5s ease-in-out, float 5s ease-in-out infinite;  
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes float {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-
-/* Headings */
-h1 {
-    font-size: 4.5rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 5px;
-    background: linear-gradient(90deg, #00FF00, #00CC00);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    animation: neonGlow 2s ease-in-out infinite alternate, zoomIn 1.5s ease-in-out;
-}
-
-/* Zoom animation for h1 */
-@keyframes zoomIn {
-    from {
-        transform: scale(0.9);
-    }
-    to {
-        transform: scale(1);
-    }
-}
-
-p {
-    font-size: 1.6rem;
-    margin: 20px 0;
-    color: #e1e1e1;
-    max-width: 900px;
-    line-height: 1.7;
-    transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
-}
-
-p:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
-}
-
-/* Call-to-Action Button */
-#hero button {
-    padding: 15px 40px;
-    font-size: 1.4rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: #000;
-    background: linear-gradient(45deg, #00FF00, #009900);
-    border: none;
-    border-radius: 50px;
-    box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    cursor: pointer;
-    margin-top: 40px;
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-}
-
-#hero button::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(0, 255, 0, 0.4), transparent 50%);
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    transform: scale(0);
-    z-index: 0;
-}
-
-#hero button:hover::before {
-    opacity: 1;
-    transform: scale(1);
-}
-
-#hero button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 0, 0.5);
-}
-
-#hero button:active {
-    transform: translateY(0);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-}
-
-/* Button ripple effect */
-#hero button::after {
-    content: '';
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    top: 50%;
-    left: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transition: opacity 0.6s, transform 0.6s;
-    transform: translate(-50%, -50%) scale(0);
-    border-radius: 50%;
-    opacity: 0;
-    pointer-events: none;
-}
-
-#hero button:active::after {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-}
-
-/* Video Section */
-#videoSection {
-    background: #111111;
-    padding: 100px 20px;
-    border-radius: 20px;
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
-    transition: background 0.5s ease;
-    animation: slideUp 1s ease-out;
-}
-
-@keyframes slideUp {
-    from {
         transform: translateY(50px);
-        opacity: 0;
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     }
-    to {
-        transform: translateY(0);
+
+    section.visible {
         opacity: 1;
-    }
-}
-
-#videoSection:hover {
-    background: #1c1c1c;
-    box-shadow: 0 0 30px 10px rgba(0, 255, 0, 0.7);
-}
-
-h2 {
-    font-size: 2.8rem;
-    margin-bottom: 30px;
-    color: #00FF00;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    animation: textSlideIn 1.5s ease-out;
-}
-
-/* Text Slide-in */
-@keyframes textSlideIn {
-    from {
-        transform: translateY(-30px);
-        opacity: 0;
-    }
-    to {
         transform: translateY(0);
-        opacity: 1;
     }
-}
 
-video {
-    width: 100%;
-    max-width: 800px;
-    height: auto;
-    border-radius: 15px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-}
-
-video:hover {
-    transform: scale(1.05);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
-}
-
-
-/* Button Styling for Video Section */
-#startButton, #stopButton {
-    padding: 10px 25px;
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: #FFFFFF;
-    background: #00CC00;
-    border: none;
-    border-radius: 30px;
-    box-shadow: 0 10px 30px rgba(0, 255, 0, 0.4);
-    margin: 10px;
-    transition: background 0.3s ease, transform 0.3s ease;
-    cursor: pointer;
-}
-
-#startButton:hover, #stopButton:hover {
-    background: #00FF00;
-    transform: translateY(-3px);
-}
-
-#startButton:active, #stopButton:active {
-    transform: translateY(0);
-}
-
-/* Neon Glow Animation */
-@keyframes neonGlow {
-    from {
-        text-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 0 20px rgba(0, 255, 0, 0.7);
+    /* Hero Section Styling */
+    #hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: transparent;
+        padding-top: 20vh;
+        animation: fadeIn 1.5s ease-in-out, float 5s ease-in-out infinite;
     }
-    to {
-        text-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 1);
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
-}
 
-/* Smooth scroll */
-html {
-    scroll-behavior: smooth;
-}
+    @keyframes float {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
 
-/* Media queries for responsiveness */
-@media (max-width: 768px) {
+    /* Headings */
     h1 {
-        font-size: 3rem;
+        font-size: 4.5rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        background: linear-gradient(90deg, #00FF00, #00CC00);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: neonGlow 2s ease-in-out infinite alternate, zoomIn 1.5s ease-in-out;
+    }
+
+    /* Zoom animation for h1 */
+    @keyframes zoomIn {
+        from {
+            transform: scale(0.9);
+        }
+        to {
+            transform: scale(1);
+        }
     }
 
     p {
-        font-size: 1.3rem;
+        font-size: 1.6rem;
+        margin: 20px 0;
+        color: #e1e1e1;
+        max-width: 900px;
+        line-height: 1.7;
+        transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
+    }
+
+    p:hover {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+
+    /* Call-to-Action Button */
+    #hero button {
+        padding: 15px 40px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        color: #000;
+        background: linear-gradient(45deg, #00FF00, #009900);
+        border: none;
+        border-radius: 50px;
+        box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        cursor: pointer;
+        margin-top: 40px;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    #hero button::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(0, 255, 0, 0.4), transparent 50%);
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        transform: scale(0);
+        z-index: 0;
+    }
+
+    #hero button:hover::before {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    #hero button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 0, 0.5);
+    }
+
+    #hero button:active {
+        transform: translateY(0);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Button ripple effect */
+    #hero button::after {
+        content: '';
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 50%;
+        left: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transition: opacity 0.6s, transform 0.6s;
+        transform: translate(-50%, -50%) scale(0);
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #hero button:active::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    /* Video Section */
+    #videoSection {
+        background: #111111;
+        padding: 100px 20px;
+        border-radius: 20px;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+        transition: background 0.5s ease;
+        animation: slideUp 1s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    #videoSection:hover {
+        background: #1c1c1c;
+        box-shadow: 0 0 30px 10px rgba(0, 255, 0, 0.7);
     }
 
     h2 {
-        font-size: 2.2rem;
+        font-size: 2.8rem;
+        margin-bottom: 30px;
+        color: #00FF00;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        animation: textSlideIn 1.5s ease-out;
     }
 
-    #hero button {
-        font-size: 1.2rem;
-        padding: 12px 30px;
+    /* Text Slide-in */
+    @keyframes textSlideIn {
+        from {
+            transform: translateY(-30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 
     video {
         width: 100%;
+        max-width: 800px;
+        height: auto;
+        border-radius: 15px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
     }
-}
 
-/* Logo styling for the top-left corner */
-.logo {
-    width: 180px;
-    height: auto;
-    position: relative;
-    top: 10px;
-    left: 10px;
-    transition: transform 0.4s ease, animation: neonGlow 2s ease-in-out infinite alternate;
-}
+    video:hover {
+        transform: scale(1.05);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+    }
 
-/* Hover animation */
-.logo:hover, .footer-logo:hover {
-    transform: scale(1.1);
-    opacity: 0.8;
-}
-/* Flexbox container for video and empty box */
-/* Flexbox container for video and empty box */
-/* Flexbox container for video and empty box */
-.video-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 40px; /* Space between the video and empty box */
-    width: 100%;
-    max-width: 1200px; /* Adjust max width as needed */
-}
 
-/* Video container */
-.video-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    /* Button Styling for Video Section */
+    #startButton, #stopButton {
+        padding: 10px 25px;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #FFFFFF;
+        background: #00CC00;
+        border: none;
+        border-radius: 30px;
+        box-shadow: 0 10px 30px rgba(0, 255, 0, 0.4);
+        margin: 10px;
+        transition: background 0.3s ease, transform 0.3s ease;
+        cursor: pointer;
+    }
 
-/* Empty box with same size as video, includes placeholder text and border */
+    #startButton:hover, #stopButton:hover {
+        background: #00FF00;
+        transform: translateY(-3px);
+    }
+
+    #startButton:active, #stopButton:active {
+        transform: translateY(0);
+    }
+
+    /* Neon Glow Animation */
+    @keyframes neonGlow {
+        from {
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7), 0 0 20px rgba(0, 255, 0, 0.7);
+        }
+        to {
+            text-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 1);
+        }
+    }
+
+    /* Smooth scroll */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Media queries for responsiveness */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 3rem;
+        }
+
+        p {
+            font-size: 1.3rem;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+        }
+
+        #hero button {
+            font-size: 1.2rem;
+            padding: 12px 30px;
+        }
+
+        video {
+            width: 100%;
+        }
+    }
+
+    /* Logo styling for the top-left corner */
+    .logo {
+        width: 180px;
+        height: auto;
+        position: relative;
+        top: 10px;
+        left: 10px;
+        transition: transform 0.4s ease, animation: neonGlow 2s ease-in-out infinite alternate;
+    }
+
+    /* Hover animation */
+    .logo:hover, .footer-logo:hover {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    /* Flexbox container for video and empty box */
+    /* Flexbox container for video and empty box */
+    /* Flexbox container for video and empty box */
+    .video-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 40px; /* Space between the video and empty box */
+        width: 100%;
+        max-width: 1200px; /* Adjust max width as needed */
+    }
+
+    /* Video container */
+    .video-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Empty box with same size as video, includes placeholder text and border */
+    .empty-box {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%; /* Ensures the box fills the available height */
+        background-color: rgba(255, 255, 255, 0.1); /* Slight transparent background */
+        border: 2px solid #00FF00; /* Solid border for visibility */
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0, 255, 0, 0.2); /* Optional shadow for effect */
+        transition: background 0.5s ease, border 0.3s ease;
+        text-align: center;
+        color: #FFFFFF;
+        font-size: 1.2rem;
+    }
+
+    /* Placeholder text inside the empty box */
+    .empty-box p {
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 500;
+    }
+
+    /* Video Section */
+    video {
+        width: 100%;
+        max-width: 640px; /* Ensure the video doesn't exceed its natural size */
+        height: auto;
+        border-radius: 15px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    video:hover {
+        transform: scale(1.05);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Button Styling for Video Section */
+    #startButton, #stopButton {
+        padding: 10px 25px;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #FFFFFF;
+        background: #00CC00;
+        border: none;
+        border-radius: 30px;
+        box-shadow: 0 10px 30px rgba(0, 255, 0, 0.4);
+        margin: 10px;
+        transition: background 0.3s ease, transform 0.3s ease;
+        cursor: pointer;
+    }
+
+    /* Hover effect for the empty box */
+    .empty-box:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: #00FF00;
+    }
+
+    /* Media queries for smaller screens */
+    @media (max-width: 768px) {
+        .video-box {
+            flex-direction: column;
+            gap: 20px; /* Reduce space between elements on smaller screens */
+        }
+
+        .video-container,{
+            width: 100%;
+        }
+    }
+
+    /* Empty box with scrollable content */
 .empty-box {
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Align content to the top */
     width: 100%;
     height: 100%; /* Ensures the box fills the available height */
+    max-height: 300px; /* Set a fixed max height */
     background-color: rgba(255, 255, 255, 0.1); /* Slight transparent background */
     border: 2px solid #00FF00; /* Solid border for visibility */
     border-radius: 15px;
@@ -383,6 +458,7 @@ html {
     text-align: center;
     color: #FFFFFF;
     font-size: 1.2rem;
+    overflow-y: scroll; /* Add vertical scroll */
 }
 
 /* Placeholder text inside the empty box */
@@ -392,50 +468,3 @@ html {
     font-weight: 500;
 }
 
-/* Video Section */
-video {
-    width: 100%;
-    max-width: 640px; /* Ensure the video doesn't exceed its natural size */
-    height: auto;
-    border-radius: 15px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-}
-
-video:hover {
-    transform: scale(1.05);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
-}
-
-/* Button Styling for Video Section */
-#startButton, #stopButton {
-    padding: 10px 25px;
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: #FFFFFF;
-    background: #00CC00;
-    border: none;
-    border-radius: 30px;
-    box-shadow: 0 10px 30px rgba(0, 255, 0, 0.4);
-    margin: 10px;
-    transition: background 0.3s ease, transform 0.3s ease;
-    cursor: pointer;
-}
-
-/* Hover effect for the empty box */
-.empty-box:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: #00FF00;
-}
-
-/* Media queries for smaller screens */
-@media (max-width: 768px) {
-    .video-box {
-        flex-direction: column;
-        gap: 20px; /* Reduce space between elements on smaller screens */
-    }
-
-    .video-container, .empty-box {
-        width: 100%;
-    }
-}
