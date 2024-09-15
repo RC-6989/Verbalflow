@@ -13,9 +13,9 @@ body {
     animation: gradientBackground 10s ease infinite;
     color: #FFFFFF;
     overflow-x: hidden;
-    position: relative;
-    opacity: 0; /* Ensure opacity is initially 0 */
-    animation: fadeInPage 1.5s ease forwards;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Gradient background animation */
@@ -23,16 +23,6 @@ body {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
-}
-
-/* Page fade-in animation */
-@keyframes fadeInPage {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
 
 /* Page container for center alignment and scrollability */
@@ -44,6 +34,18 @@ body {
     justify-content: center;
     padding: 60px 20px;
     gap: 60px;
+    animation: containerFadeIn 1s ease-in-out;
+}
+
+@keyframes containerFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* Section Styling */
@@ -55,97 +57,13 @@ section {
     margin: 0;
     color: #FFFFFF;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 section.visible {
     opacity: 1;
     transform: translateY(0);
-}
-
-/* Floating animated shapes */
-.floating-shapes {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: -1;
-}
-
-.floating-shapes span {
-    position: absolute;
-    display: block;
-    width: 60px;
-    height: 60px;
-    background: rgba(0, 255, 0, 0.2);
-    border-radius: 50%;
-    animation: floatAnimation 15s ease-in-out infinite, pulse 5s ease-in-out infinite;
-    bottom: -150px;
-}
-
-.floating-shapes span:nth-child(1) {
-    width: 80px;
-    height: 80px;
-    left: 25%;
-    animation-duration: 12s;
-}
-
-.floating-shapes span:nth-child(2) {
-    width: 100px;
-    height: 100px;
-    left: 10%;
-    animation-duration: 20s;
-    animation-delay: 3s;
-}
-
-.floating-shapes span:nth-child(3) {
-    width: 50px;
-    height: 50px;
-    left: 75%;
-    animation-duration: 15s;
-    animation-delay: 7s;
-}
-
-.floating-shapes span:nth-child(4) {
-    width: 120px;
-    height: 120px;
-    left: 50%;
-    animation-duration: 18s;
-    animation-delay: 5s;
-}
-
-.floating-shapes span:nth-child(5) {
-    width: 70px;
-    height: 70px;
-    left: 90%;
-    animation-duration: 14s;
-    animation-delay: 10s;
-}
-
-@keyframes floatAnimation {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-1000px) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.2);
-    }
-    100% {
-        transform: scale(1);
-    }
 }
 
 /* Hero Section Styling */
@@ -158,6 +76,28 @@ section.visible {
     text-align: center;
     background: transparent;
     padding-top: 20vh;
+    animation: fadeIn 1.5s ease-in-out, float 5s ease-in-out infinite;  
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
 /* Headings */
@@ -170,7 +110,17 @@ h1 {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    animation: neonGlow 2s ease-in-out infinite alternate;
+    animation: neonGlow 2s ease-in-out infinite alternate, zoomIn 1.5s ease-in-out;
+}
+
+/* Zoom animation for h1 */
+@keyframes zoomIn {
+    from {
+        transform: scale(0.9);
+    }
+    to {
+        transform: scale(1);
+    }
 }
 
 p {
@@ -179,11 +129,12 @@ p {
     color: #e1e1e1;
     max-width: 900px;
     line-height: 1.7;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
 }
 
 p:hover {
     opacity: 0.8;
+    transform: scale(1.05);
 }
 
 /* Call-to-Action Button */
@@ -193,11 +144,11 @@ p:hover {
     font-weight: 600;
     letter-spacing: 2px;
     color: #000;
-    background: linear-gradient(45deg, #00FF00, #009900) 0 0 / 200% 200%;
+    background: linear-gradient(45deg, #00FF00, #009900);
     border: none;
     border-radius: 50px;
     box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
-    transition: transform 0.4s ease, box-shadow 0.4s ease, background-position 1s linear;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
     cursor: pointer;
     margin-top: 40px;
     position: relative;
@@ -227,8 +178,6 @@ p:hover {
 #hero button:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 0, 0.5);
-    background-position: 100px 0;
-    animation: shine 1s linear;
 }
 
 #hero button:active {
@@ -236,13 +185,25 @@ p:hover {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
-@keyframes shine {
-    from {
-        background-position: -100px;
-    }
-    to {
-        background-position: 200px;
-    }
+/* Button ripple effect */
+#hero button::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: opacity 0.6s, transform 0.6s;
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#hero button:active::after {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
 }
 
 /* Video Section */
@@ -252,10 +213,23 @@ p:hover {
     border-radius: 20px;
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
     transition: background 0.5s ease;
+    animation: slideUp 1s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 #videoSection:hover {
     background: #1c1c1c;
+    box-shadow: 0 0 30px 10px rgba(0, 255, 0, 0.7);
 }
 
 h2 {
@@ -264,6 +238,19 @@ h2 {
     color: #00FF00;
     text-transform: uppercase;
     letter-spacing: 3px;
+    animation: textSlideIn 1.5s ease-out;
+}
+
+/* Text Slide-in */
+@keyframes textSlideIn {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 video {
@@ -280,6 +267,30 @@ video:hover {
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
 }
 
+/* Button Styling for Video Section */
+#startButton, #stopButton {
+    padding: 10px 25px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    background: #00CC00;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 255, 0, 0.4);
+    margin: 10px;
+    transition: background 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+#startButton:hover, #stopButton:hover {
+    background: #00FF00;
+    transform: translateY(-3px);
+}
+
+#startButton:active, #stopButton:active {
+    transform: translateY(0);
+}
+
 /* Neon Glow Animation */
 @keyframes neonGlow {
     from {
@@ -288,6 +299,111 @@ video:hover {
     to {
         text-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 1);
     }
+}
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 3rem;
+    }
+
+    p {
+        font-size: 1.3rem;
+    }
+
+    h2 {
+        font-size: 2.2rem;
+    }
+
+    #hero button {
+        font-size: 1.2rem;
+        padding: 12px 30px;
+    }
+
+    video {
+        width: 100%;
+    }
+}
+
+/* Logo styling for the top-left corner */
+.logo {
+    width: 180px;
+    height: auto;
+    position: relative;
+    top: 10px;
+    left: 10px;
+    transition: transform 0.4s ease, animation: neonGlow 2s ease-in-out infinite alternate;
+}
+
+/* Hover animation */
+.logo:hover, .footer-logo:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+/* Flexbox container for video and empty box */
+/* Flexbox container for video and empty box */
+/* Flexbox container for video and empty box */
+.video-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px; /* Space between the video and empty box */
+    width: 100%;
+    max-width: 1200px; /* Adjust max width as needed */
+}
+
+/* Video container */
+.video-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Empty box with same size as video, includes placeholder text and border */
+.empty-box {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%; /* Ensures the box fills the available height */
+    background-color: rgba(255, 255, 255, 0.1); /* Slight transparent background */
+    border: 2px solid #00FF00; /* Solid border for visibility */
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 255, 0, 0.2); /* Optional shadow for effect */
+    transition: background 0.5s ease, border 0.3s ease;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+}
+
+/* Placeholder text inside the empty box */
+.empty-box p {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+/* Video Section */
+video {
+    width: 100%;
+    max-width: 640px; /* Ensure the video doesn't exceed its natural size */
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+video:hover {
+    transform: scale(1.05);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
 }
 
 /* Button Styling for Video Section */
@@ -301,12 +417,24 @@ video:hover {
     border-radius: 30px;
     box-shadow: 0 10px 30px rgba(0, 255, 0, 0.4);
     margin: 10px;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    transition: background 0.3s ease, transform 0.3s ease;
     cursor: pointer;
 }
 
-#startButton:hover, #stopButton:hover {
-    background: #009900;
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 255, 0, 0.4);
+/* Hover effect for the empty box */
+.empty-box:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: #00FF00;
+}
+
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+    .video-box {
+        flex-direction: column;
+        gap: 20px; /* Reduce space between elements on smaller screens */
+    }
+
+    .video-container, .empty-box {
+        width: 100%;
+    }
 }

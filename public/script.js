@@ -63,10 +63,6 @@ stopButton.addEventListener('click', stopVideoCapture);
 
 // Disable stop button initially
 stopButton.disabled = true;
-
-function scrollToVideo() {
-    document.getElementById('videoSection').scrollIntoView({ behavior: 'smooth' });
-}
 window.addEventListener('scroll', function() {
     const sections = document.querySelectorAll('section');
     sections.forEach(section => {
@@ -77,4 +73,22 @@ window.addEventListener('scroll', function() {
             section.classList.add('visible');
         }
     });
+});
+// Function to scroll to the video section
+function scrollToVideo() {
+    const videoSection = document.getElementById('videoSection');
+    videoSection.scrollIntoView({ behavior: 'smooth' });
+}
+const sections = document.querySelectorAll('section');
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+});
+
+sections.forEach(section => {
+    observer.observe(section);
 });
