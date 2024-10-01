@@ -5,13 +5,8 @@ from MachineLearningPredictions.Emotion_Detection import detect_emotion
 from MachineLearningPredictions.Speech_Detection import detect_wav
 from api_handler import get_feedback
 import cv2 as cv
-from MachineLearningPredictions.Emotion_Detection import detect_emotion
-from MachineLearningPredictions.Speech_Detection import detect_wav
-from os import path 
 from audio_extract import extract_audio
-import ffmpeg
 
-# import moviepy.editor as moviepy
 
 
 # Starts the app

@@ -1,0 +1,10 @@
+audio_extract==0.7.0
+deepface==0.0.93
+ffmpeg==1.4
+ffmpeg_python==0.2.0
+Flask==3.0.3
+groq==0.11.0
+numpy==2.1.1
+opencv_python==4.10.0.84
+SpeechRecognition==3.10.4
+Werkzeug==3.0.4
