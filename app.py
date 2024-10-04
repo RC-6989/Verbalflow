@@ -6,7 +6,7 @@ from MachineLearningPredictions.Speech_Detection import detect_wav
 from api_handler import get_feedback
 import cv2 as cv
 from audio_extract import extract_audio
-
+import subprocess
 
 
 # Starts the app
@@ -47,25 +47,30 @@ def upload_frame():
     emotions_list.append(emotion)
     return "Finished", 200
 
-import subprocess
+
 
 def convert_video_to_audio(video_file_path, audio_file_path):
-    command = "ffmpeg -y -i {} -vn -b:a 50k {}".format(video_file_path, audio_file_path)
+    command = f"ffmpeg -y -i {video_file_path} -vn -af asetpts=N/SR/TB {audio_file_path}" 
     subprocess.call(command, shell=True)
 
 # Get audio
 @app.route('/upload_audio', methods=['POST'])
 def upload_audio():
+    audio = None
+    print("Attempt upload")
     if 'audio_file' not in request.files:
         return "No audio in the request", 400
     
-    try: os.remove("recordedFiles/audio.webm")
-    except: pass
+    if(os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'))):
+        print("\n\n\nDELETE!!!!!!! ",os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'),"\n\n\n")
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'))
 
-    try: os.remove("recordedFiles/audio.wav")
-    except: pass
+    if(os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'))):
+        print("\n\n\nDELETE!!!!!!! ",os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'),"\n\n\n")
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'))
     
-    with open('recordedFiles/audio.webm','w') as fp: pass
+    open(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'),'w').close() # Wipe both files
+    open(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'),'w').close()
     audio = request.files['audio_file']
 
 
@@ -81,7 +86,7 @@ def upload_audio():
     
 
     video_file = file_path
-    audio_file = "/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav"
+    audio_file = os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav')
     convert_video_to_audio(video_file, audio_file)
 
     # (ffmpeg.input(file_path).format(file_path,os.path.join(app.config['UPLOAD_FOLDER'], "audio.wav")).global_args('-progress', 'unix://{}'.format(self.filename)))
@@ -94,7 +99,8 @@ def upload_audio():
     
     # subprocess.call(['ffmpeg', '-i', '/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.mp3',
     #                '/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav'])
-    transcript = detect_wav("/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav")
+    
+    transcript = detect_wav(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'))
     print("Transcript is " + transcript)
     feedback = get_feedback(emotions_list, transcript)
     print("____________________ \n" + feedback)

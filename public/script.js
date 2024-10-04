@@ -10,6 +10,7 @@ let recordedChunks = [];
 
 // Function to start video capture
 async function startRecording() {
+    recordedChunks = []; // Reset the audio chunks
     try {
         stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
         videoElement.srcObject = stream;
@@ -21,6 +22,7 @@ async function startRecording() {
         console.log("123", mediaRecorder.mimeType)
         //mediaRecorder.mimeType = 'audio/webm';
 
+        recordedChunks = []; // Reset the audio chunks and paranoia
         // Collect the audio data
         mediaRecorder.ondataavailable = function (event) {
             if (event.data.size > 0) {
