@@ -8,3 +8,5 @@ numpy==2.1.1
 opencv_python==4.10.0.84
 SpeechRecognition==3.10.4
 Werkzeug==3.0.4
+ffmpeg==1.4
+ffmpeg-python==0.2.0
