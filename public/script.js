@@ -20,9 +20,8 @@ async function startRecording() {
 
         mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
         console.log("123", mediaRecorder.mimeType)
-        //mediaRecorder.mimeType = 'audio/webm';
 
-        recordedChunks = []; // Reset the audio chunks and paranoia
+        recordedChunks = []; // Reset the audio chunks again because paranoia
         // Collect the audio data
         mediaRecorder.ondataavailable = function (event) {
             if (event.data.size > 0) {

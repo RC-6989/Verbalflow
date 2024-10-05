@@ -48,7 +48,7 @@ def upload_frame():
     return "Finished", 200
 
 
-
+# Runs a single ffmpeg command to convert a video format to audio only
 def convert_video_to_audio(video_file_path, audio_file_path):
     command = f"ffmpeg -y -i {video_file_path} -vn -af asetpts=N/SR/TB {audio_file_path}" 
     subprocess.call(command, shell=True)
@@ -61,6 +61,7 @@ def upload_audio():
     if 'audio_file' not in request.files:
         return "No audio in the request", 400
     
+    # Delete both temporary audio files if they exist (for safety)
     if(os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'))):
         print("\n\n\nDELETE!!!!!!! ",os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'),"\n\n\n")
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'))
@@ -69,39 +70,30 @@ def upload_audio():
         print("\n\n\nDELETE!!!!!!! ",os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'),"\n\n\n")
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'))
     
-    open(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'),'w').close() # Wipe both files
+    # Wipe both files (if they still exist...)
+    open(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'),'w').close() 
     open(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'),'w').close()
     audio = request.files['audio_file']
 
-
+    # If no audio was sent, do nothing.
     if not audio:
         return "Failed to upload audio", 400
 
-    audio_name = secure_filename(audio.filename)
-
+    audio_name = secure_filename(audio.filename) # Just for safety
 
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_name)
-    audio.save(file_path)
+    audio.save(file_path) # Saves the audio to ./recordedFiles/audio.webm
 
-    
-
-    video_file = file_path
+    # New home path for the .wav file
     audio_file = os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav')
-    convert_video_to_audio(video_file, audio_file)
-
-    # (ffmpeg.input(file_path).format(file_path,os.path.join(app.config['UPLOAD_FOLDER'], "audio.wav")).global_args('-progress', 'unix://{}'.format(self.filename)))
-    # print(inputv)
-    # raudio = inputv.audio
-    # rvideo = inputv.video
-    # ffmpeg.output(raudio, rvideo, os.path.join(app.config['UPLOAD_FOLDER'], "audio.wav"))
-
-    # extract_audio(input_path=os.path.join(app.config['UPLOAD_FOLDER'], "audio.webm"), output_path=os.path.join(app.config['UPLOAD_FOLDER'], "audio.wav"))
+    convert_video_to_audio(file_path, audio_file) # Converts the .webm file to .wav format and saves it at ./recordedFiles/audio.wav
     
-    # subprocess.call(['ffmpeg', '-i', '/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.mp3',
-    #                '/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav'])
-    
+
+    # Now machine learning stuff
+    # The wav file is sent to speech detection
     transcript = detect_wav(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'))
     print("Transcript is " + transcript)
+    # The transcript from the speech detection is sent to groq to get feedback
     feedback = get_feedback(emotions_list, transcript)
     print("____________________ \n" + feedback)
     print("done ")
