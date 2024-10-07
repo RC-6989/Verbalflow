@@ -39,7 +39,7 @@ if __name__ == "__main__":
     webcam_capture = cv.VideoCapture(0)
     while True:
         x, img = webcam_capture.read()
-        emotion_prediction = detect_emotion(img, enforce_detecntion = False)
+        emotion_prediction = detect_emotion(img, enforce_detection = False)
 
         cv.putText(img, emotion_prediction, (50,50), cv.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, 2)
         cv.imshow("window", img)
