@@ -17,3 +17,5 @@ def detect_wav(wav_file):
     except sr.UnknownValueError:
         print("Unknown file value. File not found/File Corrupted. ")
 
+if __name__ == "__main__":
+    print(detect_wav("/Users/rohitchavali/Desktop/Verbalflow/recordedFiles/audio.wav"))
