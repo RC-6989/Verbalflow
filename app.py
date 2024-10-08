@@ -43,7 +43,6 @@ def upload_frame():
     file.save(file_path)
     global emotion
     emotion = detect_emotion(file_path)
-    print(emotion)
     emotions_list.append(emotion)
     return "Finished", 200
 
@@ -92,13 +91,12 @@ def upload_audio():
     # Now machine learning stuff
     # The wav file is sent to speech detection
     transcript = detect_wav(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'))
-    print("Transcript is " + transcript)
+    print("Transcript: " + transcript)
     # The transcript from the speech detection is sent to groq to get feedback
     feedback = get_feedback(emotions_list, transcript)
-    print("____________________ \n" + feedback)
-    print("done ")
+    print("____________________________________________\n" + feedback)
     return "Finished", 200
-
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
