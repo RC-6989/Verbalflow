@@ -15,6 +15,8 @@ Run `python app.py`
 Links:
 https://devpost.com/software/verbalflow
 
+How to install ffmpeg on Windows: 
+https://phoenixnap.com/kb/ffmpeg-windows
 
 How to fix mac os pyaudio install error:
 https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec
