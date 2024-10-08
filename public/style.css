@@ -364,6 +364,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 2px solid hsl(188, 100%, 51%); /* Solid border for visibility */
 }
 
 /* Empty box with same size as video, includes placeholder text and border */
