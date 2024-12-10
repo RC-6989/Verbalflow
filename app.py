@@ -62,18 +62,13 @@ def upload_audio():
     
     # Delete both temporary audio files if they exist (for safety)
     if(os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'))):
-        print("\n\n\nDELETE!!!!!!! ",os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'),"\n\n\n")
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'))
 
     if(os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'))):
-        print("\n\n\nDELETE!!!!!!! ",os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'),"\n\n\n")
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'))
     
-    # Wipe both files (if they still exist...)
-    open(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.webm'),'w').close() 
-    open(os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav'),'w').close()
-    audio = request.files['audio_file']
 
+    audio = request.files['audio_file']
     # If no audio was sent, do nothing.
     if not audio:
         return "Failed to upload audio", 400
@@ -86,7 +81,7 @@ def upload_audio():
     # New home path for the .wav file
     audio_file = os.path.join(app.config['UPLOAD_FOLDER'], 'audio.wav')
     convert_video_to_audio(file_path, audio_file) # Converts the .webm file to .wav format and saves it at ./recordedFiles/audio.wav
-    
+    print("HERE")
 
     # Now machine learning stuff
     # The wav file is sent to speech detection
